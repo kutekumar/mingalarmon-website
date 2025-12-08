@@ -1,4 +1,5 @@
 import logoPrimary from '@/assets/logo-primary.png';
+import { useScrollReveal } from '@/hooks/useScrollReveal';
 
 const footerLinks = {
   explore: [
@@ -27,10 +28,12 @@ const socialLinks = [
 ];
 
 export function Footer() {
+  const { ref: footerRef, isVisible } = useScrollReveal({ threshold: 0.1 });
+
   return (
-    <footer className="py-20 bg-card border-t border-border">
+    <footer ref={footerRef} className="py-20 bg-card border-t border-border overflow-hidden">
       <div className="container mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
+        <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           {/* Brand column */}
           <div className="lg:col-span-2">
             <img
@@ -59,7 +62,7 @@ export function Footer() {
           </div>
 
           {/* Explore */}
-          <div>
+          <div className={`transition-all duration-1000 delay-100 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <h4 className="font-serif font-medium text-foreground mb-4">Explore</h4>
             <ul className="space-y-3">
               {footerLinks.explore.map((link) => (
@@ -76,7 +79,7 @@ export function Footer() {
           </div>
 
           {/* Connect */}
-          <div>
+          <div className={`transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <h4 className="font-serif font-medium text-foreground mb-4">Connect</h4>
             <ul className="space-y-3">
               {footerLinks.connect.map((link) => (
@@ -93,7 +96,7 @@ export function Footer() {
           </div>
 
           {/* Legal */}
-          <div>
+          <div className={`transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <h4 className="font-serif font-medium text-foreground mb-4">Legal</h4>
             <ul className="space-y-3">
               {footerLinks.legal.map((link) => (
@@ -111,7 +114,7 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className={`pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4 transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
           <p className="text-muted-foreground text-sm">
             © {new Date().getFullYear()} MingalarMon. All rights reserved.
           </p>
