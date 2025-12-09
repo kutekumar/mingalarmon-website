@@ -1,4 +1,3 @@
-import logoPrimary from '@/assets/logo-primary.png';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 
 const footerLinks = {
@@ -37,8 +36,8 @@ export function Footer() {
           {/* Brand column */}
           <div className="lg:col-span-2">
             <img
-              src={logoPrimary}
-              alt="MingalarMon"
+              src="/logo.png"
+              alt="Mingalar Mon"
               className="h-12 w-auto mb-6 opacity-80"
             />
             <p className="text-muted-foreground max-w-sm mb-6">

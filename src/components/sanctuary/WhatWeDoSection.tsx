@@ -1,53 +1,55 @@
 import { useState } from 'react';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
+import { motion } from "framer-motion";
+import { Diamond, Circle, Square, Triangle, Target, Star, HeartHandshake } from "lucide-react";
 
 const services = [
   {
     title: 'Elite Consumers',
     description: 'Curated experiences for those who appreciate the extraordinary. We create digital sanctuaries that speak to refined tastes.',
-    icon: '◆',
+    icon: Diamond,
     color: 'from-primary/20 to-primary/5',
     hoverColor: 'group-hover:from-primary/30 group-hover:to-primary/10',
   },
   {
     title: 'Fine Dining Yangon',
     description: 'Elevating Myanmar\'s culinary scene through immersive digital storytelling and seamless guest experiences.',
-    icon: '◇',
+    icon: Star,
     color: 'from-gold/20 to-gold/5',
     hoverColor: 'group-hover:from-gold/30 group-hover:to-gold/10',
   },
   {
     title: 'Fine Dining Redefined',
     description: 'Transforming how restaurants connect with their guests—from reservation to memory.',
-    icon: '○',
+    icon: Circle,
     color: 'from-accent/30 to-accent/10',
     hoverColor: 'group-hover:from-accent/40 group-hover:to-accent/20',
   },
   {
     title: 'SAAS for Visionaries',
     description: 'Tools built with soul. Software that feels human, works beautifully, and grows with your vision.',
-    icon: '□',
+    icon: Square,
     color: 'from-secondary to-secondary/50',
     hoverColor: 'group-hover:from-secondary group-hover:to-secondary/70',
   },
   {
     title: 'Bespoke Solutions',
     description: 'Every detail considered. Custom digital craftsmanship for brands that refuse ordinary.',
-    icon: '△',
+    icon: Triangle,
     color: 'from-primary/15 to-gold/10',
     hoverColor: 'group-hover:from-primary/25 group-hover:to-gold/20',
   },
   {
     title: 'Digital Agency',
     description: 'Strategy meets artistry. We bring authentic brands to life in the digital realm.',
-    icon: '◎',
+    icon: Target,
     color: 'from-gold/15 to-primary/10',
     hoverColor: 'group-hover:from-gold/25 group-hover:to-primary/20',
   },
   {
     title: 'Authentic Lifestyles',
     description: 'Helping creators and entrepreneurs build meaningful businesses rooted in truth and purpose.',
-    icon: '✦',
+    icon: HeartHandshake,
     color: 'from-accent/20 to-secondary/30',
     hoverColor: 'group-hover:from-accent/30 group-hover:to-secondary/40',
   },
@@ -68,7 +70,7 @@ export function WhatWeDoSection() {
   };
 
   return (
-    <section ref={sectionRef} className="py-32 md:py-40 bg-gradient-to-b from-background via-secondary/20 to-background relative overflow-hidden">
+    <section id="services" ref={sectionRef} className="py-32 md:py-40 bg-gradient-to-b from-background via-secondary/20 to-background relative overflow-hidden">
       {/* Animated background orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] rounded-full bg-gradient-to-br from-gold/8 to-transparent blur-3xl animate-float" />
@@ -135,14 +137,16 @@ interface ServiceCardProps {
 }
 
 function ServiceCard({ service, index, isVisible, isActive, mousePosition, onMouseMove, onMouseLeave }: ServiceCardProps) {
+  const Icon = service.icon as React.ComponentType<React.SVGProps<SVGSVGElement>>;
   return (
-    <div
+    <motion.div
       className={`group relative cursor-pointer transition-all duration-700 ${
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
       } ${index === 6 ? 'lg:col-start-2' : ''}`}
       style={{ transitionDelay: `${index * 100}ms` }}
       onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}
+      whileHover={{ y: -4 }}
     >
       {/* Spotlight effect following cursor */}
       <div
@@ -155,14 +159,18 @@ function ServiceCard({ service, index, isVisible, isActive, mousePosition, onMou
       />
 
       {/* Card */}
-      <div className={`relative h-full bg-gradient-to-br ${service.color} ${service.hoverColor} rounded-3xl p-8 md:p-10 border border-border/50 group-hover:border-primary/30 transition-all duration-500 overflow-hidden`}>
+      <div
+        className={`relative h-full bg-gradient-to-br ${service.color} ${service.hoverColor} rounded-3xl p-8 md:p-10 border border-border/50 group-hover:border-primary/30 transition-all duration-500 overflow-hidden`}
+        style={{ backgroundImage: `radial-gradient(1000px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(212,175,55,0.06), transparent 60%)` }}
+      >
         {/* Floating icon */}
         <div className="relative mb-8">
-          <div className="w-20 h-20 rounded-2xl bg-card/80 backdrop-blur-sm flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-500 group-hover:scale-110 group-hover:-rotate-3">
-            <span className="text-4xl text-primary group-hover:text-gold transition-colors duration-500">
-              {service.icon}
-            </span>
-          </div>
+          <motion.div
+            className="w-20 h-20 rounded-2xl bg-card/80 backdrop-blur-sm flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-500 group-hover:scale-110 group-hover:-rotate-3"
+            whileHover={{ rotate: -2 }}
+          >
+            <Icon className="w-10 h-10 text-primary group-hover:text-gold transition-colors duration-500" />
+          </motion.div>
           {/* Decorative ring */}
           <div className="absolute -inset-2 rounded-3xl border border-dashed border-primary/0 group-hover:border-primary/20 transition-all duration-700 group-hover:rotate-6" />
         </div>
@@ -186,6 +194,6 @@ function ServiceCard({ service, index, isVisible, isActive, mousePosition, onMou
         {/* Corner decoration */}
         <div className="absolute -bottom-8 -right-8 w-32 h-32 rounded-full bg-gradient-to-tl from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
       </div>
-    </div>
+    </motion.div>
   );
 }

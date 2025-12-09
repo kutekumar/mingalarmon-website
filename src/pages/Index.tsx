@@ -1,7 +1,10 @@
 import { HeroSection } from '@/components/sanctuary/HeroSection';
-import { WhatWeDoSection } from '@/components/sanctuary/WhatWeDoSection';
+import { MingalarWhatWeDoSection } from '@/components/sanctuary/MingalarWhatWeDoSection';
+import { MingalarBrandSection } from '@/components/sanctuary/MingalarBrandSection';
+import { EnhancedNav } from '@/components/sanctuary/EnhancedNav';
 import { ProductsCarousel } from '@/components/sanctuary/ProductsCarousel';
 import { BrandInLifeSection } from '@/components/sanctuary/BrandInLifeSection';
+import { OrnamentDivider } from '@/components/sanctuary/OrnamentDivider';
 import { ManifestoSection } from '@/components/sanctuary/ManifestoSection';
 import { JoinSection } from '@/components/sanctuary/JoinSection';
 import { Footer } from '@/components/sanctuary/Footer';
@@ -13,14 +16,23 @@ const Index = () => {
       {/* Grain overlay for texture */}
       <div className="grain-overlay" aria-hidden="true" />
       
+      {/* Enhanced Navigation */}
+      <EnhancedNav />
+      
       {/* Main content */}
-      <main>
+      <main className="pt-16">
         <HeroSection />
-        <WhatWeDoSection />
-        <ProductsCarousel />
+        <MingalarWhatWeDoSection />
+        <MingalarBrandSection />
+        <OrnamentDivider />
+        <div id="products">
+          <ProductsCarousel />
+        </div>
         <BrandInLifeSection />
         <ManifestoSection />
-        <JoinSection />
+        <div id="contact">
+          <JoinSection />
+        </div>
       </main>
 
       <Footer />

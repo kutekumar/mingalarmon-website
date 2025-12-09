@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const products = [
   {
@@ -50,7 +51,7 @@ export function ProductsCarousel() {
   };
 
   return (
-    <section ref={sectionRef} className="py-32 relative overflow-hidden">
+    <section id="products" ref={sectionRef} className="py-32 relative overflow-hidden">
       <div className="container mx-auto px-6">
         {/* Header */}
         <div
@@ -91,6 +92,11 @@ export function ProductsCarousel() {
           ref={scrollRef}
           className="flex gap-6 overflow-x-auto pb-6 -mx-6 px-6 snap-x snap-mandatory scrollbar-hide"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          onMouseMove={(e) => {
+            const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
+            (e.currentTarget as HTMLDivElement).style.setProperty('--x', `${e.clientX - rect.left}px`);
+            (e.currentTarget as HTMLDivElement).style.setProperty('--y', `${e.clientY - rect.top}px`);
+          }}
         >
           {products.map((product, index) => (
             <ProductCard
@@ -114,38 +120,38 @@ interface ProductCardProps {
 
 function ProductCard({ product, index, isVisible }: ProductCardProps) {
   return (
-    <div
+    <motion.div
       className={`flex-shrink-0 w-80 md:w-96 snap-center transition-all duration-700 ${
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
       }`}
       style={{ transitionDelay: `${index * 100}ms` }}
+      whileHover={{ y: -6, scale: 1.02 }}
     >
-      <div className="card-sanctuary h-full flex flex-col group">
-        {/* Category badge */}
+      <div className="card-sanctuary h-full flex flex-col group relative overflow-hidden">
+        <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: 'radial-gradient(600px circle at var(--x, 50%) var(--y, 50%), rgba(212,175,55,0.08), transparent 40%)' }} />
+
         <span className="inline-block text-xs font-medium tracking-widest uppercase text-primary mb-4">
           {product.category}
         </span>
 
-        {/* Title */}
         <h3 className="text-2xl font-serif font-medium text-foreground mb-4 group-hover:text-primary transition-colors duration-500">
           {product.title}
         </h3>
 
-        {/* Description */}
         <p className="text-muted-foreground mb-4 flex-grow">
           {product.description}
         </p>
 
-        {/* Use case */}
         <p className="text-sm text-muted-foreground/80 italic mb-6">
           {product.useCase}
         </p>
 
-        {/* CTA */}
-        <button className="btn-secondary text-sm py-3 group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary">
+        <motion.button className="btn-secondary text-sm py-3 group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary"
+          whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
+        >
           Request Demo
-        </button>
+        </motion.button>
       </div>
-    </div>
+    </motion.div>
   );
 }
