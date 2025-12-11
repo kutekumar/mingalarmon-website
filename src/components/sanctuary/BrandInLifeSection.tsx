@@ -55,7 +55,7 @@ export function BrandInLifeSection() {
           </span>
           <h2 className="text-4xl md:text-6xl lg:text-7xl font-serif font-medium mt-4 text-foreground leading-tight">
             Discover the
-            <span className="block text-gradient">Possibilities</span>
+            <span className="block text-mingalar-red">Possibilities</span>
           </h2>
           <p className="text-muted-foreground mt-6 max-w-2xl mx-auto text-lg md:text-xl leading-relaxed">
             Imagine our brand living in your world—on what you wear, where you dine, and how you create.

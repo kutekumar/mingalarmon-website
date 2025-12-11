@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const navItems = [
   { name: 'Home', href: '#home' },
@@ -13,10 +14,16 @@ const navItems = [
 export const EnhancedNav = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = navItems.map(item => item.href.substring(1));
+      // Filter out page routes (those starting with /)
+      const sections = navItems
+        .filter(item => !item.href.startsWith('/'))
+        .map(item => item.href.substring(1));
+      
       const currentSection = sections.find(section => {
         const element = document.getElementById(section);
         if (element) {
@@ -33,10 +40,29 @@ export const EnhancedNav = () => {
   }, []);
 
   const handleNavClick = (href: string) => {
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+    // CTA route to visionaries
+    if (href === '/visionaries') {
+      navigate('/visionaries');
       setIsMenuOpen(false);
+      return;
+    }
+
+    // Anchor links within current or home page
+    if (href.startsWith('#')) {
+      const targetId = href.substring(1);
+      if (location.pathname !== '/') {
+        navigate('/', { state: { scrollTo: targetId } });
+        setIsMenuOpen(false);
+        return;
+      }
+      const el = document.getElementById(targetId);
+      const nav = document.querySelector('nav');
+      const navH = (nav as HTMLElement)?.offsetHeight || 0;
+      if (el) {
+        const top = el.getBoundingClientRect().top + window.scrollY - navH - 8;
+        window.scrollTo({ top, behavior: 'smooth' });
+        setIsMenuOpen(false);
+      }
     }
   };
 
@@ -67,7 +93,7 @@ export const EnhancedNav = () => {
                 key={item.name}
                 onClick={() => handleNavClick(item.href)}
                 className={`relative text-base font-serif font-medium transition-all duration-300 cursor-pointer
-                  ${activeSection === item.href.substring(1)
+                  ${!item.href.startsWith('/') && activeSection === item.href.substring(1)
                     ? 'text-mingalar-red font-semibold'
                     : 'text-gray-700 dark:text-gray-300 hover:text-mingalar-red'}`}
                 initial={{ opacity: 0, y: -10 }}
@@ -83,11 +109,23 @@ export const EnhancedNav = () => {
                   whileHover={{ width: '100%' }}
                   transition={{ duration: 0.4, ease: 'easeInOut' }}
                   style={{
-                    width: activeSection === item.href.substring(1) ? '100%' : 0
+                    width: !item.href.startsWith('/') && activeSection === item.href.substring(1) ? '100%' : 0
                   }}
                 />
               </motion.div>
             ))}
+            {/* CTA Button */}
+            <motion.button
+              onClick={() => handleNavClick('/visionaries')}
+              className="px-4 py-2 rounded-full bg-mingalar-red text-white font-medium shadow hover:shadow-lg hover:brightness-110 transition-all duration-300"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.5 }}
+              whileHover={{ y: -2, scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              Collaborate with Us
+            </motion.button>
             <motion.div
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -99,7 +137,6 @@ export const EnhancedNav = () => {
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center space-x-4">
-            <ThemeToggle />
             <motion.button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="p-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-300"
@@ -149,8 +186,8 @@ export const EnhancedNav = () => {
                   key={item.name}
                   onClick={() => handleNavClick(item.href)}
                   className={`block w-full text-left px-4 py-3 rounded-lg font-medium transition-all duration-300
-                    ${activeSection === item.href.substring(1) 
-                      ? 'bg-[#8A0505]/10 text-[#8A0505] dark:bg-[#FF6B6B]/10 dark:text-[#FF6B6B]' 
+                    ${!item.href.startsWith('/') && activeSection === item.href.substring(1)
+                      ? 'bg-[#8A0505]/10 text-[#8A0505] dark:bg-[#FF6B6B]/10 dark:text-[#FF6B6B]'
                       : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-[#8A0505] dark:hover:text-[#FF6B6B]'}`}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -160,7 +197,7 @@ export const EnhancedNav = () => {
                 >
                   <span className="relative">
                     {item.name}
-                    {activeSection === item.href.substring(1) && (
+                    {!item.href.startsWith('/') && activeSection === item.href.substring(1) && (
                       <motion.div
                         className="absolute -left-2 top-1/2 -translate-y-1/2 w-1 h-4 bg-[#8A0505] dark:bg-[#FF6B6B] rounded-r-full"
                         layoutId="activeIndicator"
@@ -169,6 +206,19 @@ export const EnhancedNav = () => {
                   </span>
                 </motion.button>
               ))}
+              <div className="pt-4">
+                <motion.button
+                  onClick={() => handleNavClick('/visionaries')}
+                  className="w-full px-4 py-3 rounded-lg bg-mingalar-red text-white font-medium shadow hover:shadow-lg hover:brightness-110 transition-all duration-300"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, delay: 0.5 }}
+                  whileHover={{ x: 5 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  Collaborate with Us
+                </motion.button>
+              </div>
             </div>
           </motion.div>
         )}

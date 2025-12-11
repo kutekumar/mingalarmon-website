@@ -69,11 +69,37 @@ export function JoinSection() {
             </span>
             <h2 className="text-4xl md:text-6xl lg:text-7xl font-serif font-medium mt-4 text-foreground leading-tight">
               Be Part of
-              <span className="block text-gradient">Something Rare</span>
+              <span className="block text-mingalar-red">Something Rare</span>
             </h2>
             <p className="text-muted-foreground mt-6 max-w-xl mx-auto text-lg md:text-xl leading-relaxed">
               Join our community of creators, visionaries, and authenticity seekers.
             </p>
+          </div>
+
+          {/* Map and Contact Info */}
+          <div className={`mb-16 transition-all duration-1000 delay-100 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="overflow-hidden rounded-3xl border border-border/50 bg-card/50 backdrop-blur-sm">
+                <div className="aspect-[16/9]">
+                  <iframe
+                    title="MingalarMon Office Map"
+                    src="https://www.google.com/maps?q=MICT%20Park%2C%20Hlaing%20Township%2C%20Yangon&output=embed"
+                    className="w-full h-full"
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
+                </div>
+              </div>
+              <div className="rounded-3xl border border-border/50 bg-card/50 backdrop-blur-sm p-6 md:p-8 flex flex-col justify-center">
+                <h3 className="text-2xl font-serif font-medium text-foreground mb-4">Our Address</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Building 9, 5th Floor, MICT Park, Hlaing Township, Yangon, Myanmar
+                </p>
+                <p className="text-muted-foreground mt-4">
+                  Phone: <a href="tel:+959761769097" className="hover:text-primary transition-colors">+95 9761769097</a>
+                </p>
+              </div>
+            </div>
           </div>
 
           {/* Form or Success State */}

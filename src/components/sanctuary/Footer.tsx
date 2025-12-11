@@ -44,6 +44,11 @@ export function Footer() {
               Building digital sanctuaries for those who seek authenticity, 
               meaning, and the courage to choose love over fear.
             </p>
+
+            <div className="text-muted-foreground max-w-sm mb-6 text-sm leading-relaxed">
+              <p>Building 9, 5th Floor, MICT Park, Hlaing Township, Yangon, Myanmar</p>
+              <p className="mt-1">Phone: <a href="tel:+959761769097" className="hover:text-primary transition-colors">+95 9761769097</a></p>
+            </div>
             
             {/* Social links */}
             <div className="flex gap-4">

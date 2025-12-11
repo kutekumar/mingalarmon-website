@@ -9,8 +9,29 @@ import { ManifestoSection } from '@/components/sanctuary/ManifestoSection';
 import { JoinSection } from '@/components/sanctuary/JoinSection';
 import { Footer } from '@/components/sanctuary/Footer';
 import { AccessibilityToggle } from '@/components/sanctuary/AccessibilityToggle';
+import { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Index = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const state = location.state as { scrollTo?: string } | null;
+    if (state?.scrollTo) {
+      const targetId = state.scrollTo;
+      const el = document.getElementById(targetId);
+      const nav = document.querySelector('nav');
+      const navH = (nav as HTMLElement)?.offsetHeight || 0;
+      if (el) {
+        const top = el.getBoundingClientRect().top + window.scrollY - navH - 8;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+      // clear state
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location, navigate]);
+
   return (
     <div className="min-h-screen bg-background scroll-smooth">
       {/* Grain overlay for texture */}
@@ -22,7 +43,9 @@ const Index = () => {
       {/* Main content */}
       <main className="pt-16">
         <HeroSection />
-        <MingalarWhatWeDoSection />
+        <div id="services">
+          <MingalarWhatWeDoSection />
+        </div>
         <MingalarBrandSection />
         <OrnamentDivider />
         <div id="products">
